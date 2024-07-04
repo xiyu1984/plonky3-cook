@@ -19,6 +19,7 @@ p3-dft = { path = "../../zkp/community/Plonky3/dft" }
 p3-fri = { path = "../../zkp/community/Plonky3/fri" }
 p3-goldilocks = { path = "../../zkp/community/Plonky3/goldilocks" }
 p3-keccak = { path = "../../zkp/community/Plonky3/keccak" }
+p3-keccak-air = { path = "../../zkp/community/Plonky3/keccak-air" }
 # p3-mds = { path = "../../zkp/community/Plonky3/mds" }
 p3-merkle-tree = { path = "../../zkp/community/Plonky3/merkle-tree" }
 # p3-mersenne-31 = { path = "../../zkp/community/Plonky3/mersenne-31" }
@@ -29,3 +30,4 @@ p3-uni-stark = { path = "../../zkp/community/Plonky3/uni-stark" }
 rand = "0.8.5"
 tracing-subscriber = { version = "0.3.17", features = ["std", "env-filter"] }
 tracing-forest = { version = "0.1.6", features = ["ansi", "smallvec"] }
+tracing = { version = "0.1.40"}
