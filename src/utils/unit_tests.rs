@@ -11,7 +11,7 @@ mod tests {
     use p3_keccak_air::{generate_trace_rows, KeccakAir};
     use p3_merkle_tree::FieldMerkleTreeMmcs;
     use p3_symmetric::{CompressionFunctionFromHasher, SerializingHasher32};
-    use p3_uni_stark::{prove, verify, StarkConfig, VerificationError};
+    use p3_uni_stark::{prove, verify, StarkConfig};
     use rand::random;
     use tracing_forest::util::LevelFilter;
     use tracing_forest::ForestLayer;
@@ -20,7 +20,7 @@ mod tests {
     use tracing_subscriber::{EnvFilter, Registry};
 
     #[test]
-    fn test_keccak_air() -> Result<(), VerificationError> {
+    fn test_keccak_air() {
         const NUM_HASHES: usize = 32;
 
         let env_filter = EnvFilter::builder()
@@ -73,7 +73,7 @@ mod tests {
         let proof = prove(&config, &KeccakAir {}, &mut challenger, trace, &vec![]);
 
         let mut challenger = Challenger::from_hasher(vec![], byte_hash);
-        verify(&config, &KeccakAir {}, &mut challenger, &proof, &vec![])
+        verify(&config, &KeccakAir {}, &mut challenger, &proof, &vec![]).unwrap();
     }
 
 }

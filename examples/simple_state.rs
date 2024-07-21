@@ -12,7 +12,7 @@ use p3_matrix::dense::RowMajorMatrix;
 use p3_merkle_tree::FieldMerkleTreeMmcs;
 use p3_poseidon2::{Poseidon2, Poseidon2ExternalMatrixGeneral};
 use p3_symmetric::{PaddingFreeSponge, TruncatedPermutation};
-use p3_uni_stark::{prove, verify, StarkConfig, VerificationError};
+use p3_uni_stark::{prove, verify, StarkConfig};
 use rand::{distributions::{Distribution, Standard}, thread_rng, Rng};
 use tracing_forest::{util::LevelFilter, ForestLayer};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter, Registry};
@@ -101,7 +101,7 @@ fn random_trace<F: PrimeField32>() -> RowMajorMatrix<F> where Standard: Distribu
     trace
 }
 
-fn main() -> Result<(), VerificationError> {
+fn main() {
     let env_filter = EnvFilter::builder()
         .with_default_directive(LevelFilter::INFO.into())
         .from_env_lossy();
@@ -117,7 +117,7 @@ fn main() -> Result<(), VerificationError> {
     type Perm = Poseidon2<Val, Poseidon2ExternalMatrixGeneral, DiffusionMatrixBabyBear, 16, 7>;
     let perm = Perm::new_from_rng_128(
         Poseidon2ExternalMatrixGeneral,
-        DiffusionMatrixBabyBear,
+        DiffusionMatrixBabyBear::default(),
         &mut thread_rng(),
     );
 
@@ -161,5 +161,5 @@ fn main() -> Result<(), VerificationError> {
     let mut p_challenger = Challenger::new(perm.clone());
     let proof = prove(&config, &SimpleState {}, &mut p_challenger, trace, &vec![]);
     let mut v_challenger = Challenger::new(perm);
-    verify(&config, &SimpleState {}, &mut v_challenger, &proof, &vec![])
+    verify(&config, &SimpleState {}, &mut v_challenger, &proof, &vec![]).unwrap();
 }
